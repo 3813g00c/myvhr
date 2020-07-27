@@ -9,7 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>vhr-web</artifactId>
-    <packaging>jar</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>vhr-web</name>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -84,18 +90,11 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.yml</include>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
-                    <include>**/*.yml</include>
-                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>
