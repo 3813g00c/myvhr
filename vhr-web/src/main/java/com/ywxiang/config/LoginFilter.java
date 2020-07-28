@@ -2,11 +2,15 @@ package com.ywxiang.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ywxiang.entity.Hr;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +29,9 @@ import java.nio.charset.StandardCharsets;
  */
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
+    @Autowired
+    SessionRegistry sessionRegistry;
+
     /**
      * 登录认证
      *
@@ -41,26 +48,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // 此过滤器的用户名密码默认从request.getParameter()获取，但是这种
         // 读取方式不能读取到如 application/json 等 post 请求数据，需要把
         // 用户名密码的读取逻辑修改为到流中读取request.getInputStream()
+        if (!HttpMethod.POST.toString().equals(request.getMethod())) {
 
-        if (!request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException(
                     "Authentication method not supported: " + request.getMethod());
         }
 
         String verify_code = (String) request.getSession().getAttribute("verify_code");
         if (request.getContentType().contains(MediaType.APPLICATION_JSON_VALUE)){
-//            Map<String, String> loginData = new HashMap<>();
-//            try {
-//                loginData = new ObjectMapper().readValue(request.getInputStream(), Map.class);
-//            } catch (IOException e){
-//                e.printStackTrace();
-//            } finally {
-//                String code = loginData.get("code");
-//            }
-//
-//            String username = loginData.get(getUsernameParameter());
-//            String password = loginData.get(getPasswordParameter());
-
             String body = getBody(request);
             JSONObject jsonObject = JSON.parseObject(body);
             String username = jsonObject.getString(getUsernameParameter());
@@ -74,6 +69,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             username = username.trim();
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
             setDetails(request, authRequest);
+            Hr principal = new Hr();
+            principal.setUsername(username);
+            sessionRegistry.registerNewSession(request.getSession(true).getId(), principal);
             return this.getAuthenticationManager().authenticate(authRequest);
         } else {
             return super.attemptAuthentication(request, response);
