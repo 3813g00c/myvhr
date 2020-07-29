@@ -18,9 +18,15 @@ spring:
       url: jdbc:mysql://localhost:3306/vhr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
       username: ywxiang
       password: Xyw@172410
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6379
+    password: Xyw@172410
 
 mybatis:
   type-aliases-package: com.ywxiang.entity
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+

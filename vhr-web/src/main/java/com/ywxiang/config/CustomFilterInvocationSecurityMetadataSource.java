@@ -30,8 +30,11 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+        // 提取当前请求的URL
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
+        // 查询数据库得到数据库中url pattern和role的对应关系
         List<Menu> menus = menuService.getAllMenusWithRole();
+        // 遍历所有的规则，如果请求的url匹配上，则保存下来
         for (Menu menu: menus){
             if (antPathMatcher.match(menu.getUrl(), requestUrl)){
                 List<Role> roles = menu.getRoles();
@@ -42,6 +45,7 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
                 return SecurityConfig.createList(str.toString());
             }
         }
+        // 返回到AccessDecisionManager类中
         return SecurityConfig.createList("ROLE_LOGIN");
     }
 
@@ -52,6 +56,6 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return false;
+        return true;
     }
 }
