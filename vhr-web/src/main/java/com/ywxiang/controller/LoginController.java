@@ -1,7 +1,9 @@
 package com.ywxiang.controller;
 
 import com.ywxiang.common.RespBean;
+import com.ywxiang.common.utils.RedisUtils;
 import com.ywxiang.common.utils.VerificationCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,11 +20,16 @@ import java.util.UUID;
  */
 @RestController
 public class LoginController {
+    private static final long EXPIRE_TIME = 60 * 5;
+    @Autowired
+    RedisUtils redisUtils;
+
     @GetMapping
     public RespBean login(){
         return RespBean.error("尚未登录！");
     }
 
+    @GetMapping("/verifyCode")
     public void verifyCode(HttpServletRequest request, HttpServletResponse resp) throws IOException {
         VerificationCode code = new VerificationCode();
         BufferedImage image = code.getImage();
@@ -32,7 +39,7 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute("VERIFYID", verifyId);
-
+        redisUtils.set(verifyId, text, EXPIRE_TIME);
         // 保存到redis
         VerificationCode.output(image, resp.getOutputStream());
     }

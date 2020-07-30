@@ -29,4 +29,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-
+server:
+  port: 8081
+  compression:
+    enabled: true

@@ -2,6 +2,7 @@ package com.ywxiang.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ywxiang.common.utils.RedisUtils;
 import com.ywxiang.entity.Hr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -32,6 +33,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Autowired
     SessionRegistry sessionRegistry;
 
+    @Autowired
+    RedisUtils redisUtils;
+
     /**
      * 登录认证
      *
@@ -49,17 +53,19 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // 读取方式不能读取到如 application/json 等 post 请求数据，需要把
         // 用户名密码的读取逻辑修改为到流中读取request.getInputStream()
         if (!HttpMethod.POST.toString().equals(request.getMethod())) {
-
             throw new AuthenticationServiceException(
                     "Authentication method not supported: " + request.getMethod());
         }
 
-        String verify_code = (String) request.getSession().getAttribute("verify_code");
+        String verifyId = (String) request.getSession().getAttribute("VERIFYID");
         if (request.getContentType().contains(MediaType.APPLICATION_JSON_VALUE)){
             String body = getBody(request);
             JSONObject jsonObject = JSON.parseObject(body);
             String username = jsonObject.getString(getUsernameParameter());
             String password = jsonObject.getString(getPasswordParameter());
+            String code = jsonObject.getString("code");
+            // 校验验证码
+            //checkCode(response, code, verifyId);
             if (username == null) {
                 username = "";
             }
@@ -113,5 +119,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             }
         }
         return sb.toString();
+    }
+
+    public void checkCode(HttpServletResponse resp, String code, String verifyId) {
+        String verify_code = redisUtils.get(verifyId);
+        if (code == null || verify_code == null || "".equals(code) || !verify_code.toLowerCase().equals(code.toLowerCase())) {
+            //验证码不正确
+            throw new AuthenticationServiceException("验证码不正确");
+        }
     }
 }
