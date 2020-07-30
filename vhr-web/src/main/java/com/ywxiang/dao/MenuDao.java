@@ -46,6 +46,13 @@ public interface MenuDao {
 
     int updateByPrimaryKey(Menu record);
 
+    /**
+     * 通过id查询所拥有的菜单
+     *
+     * @param hrid
+     * @return
+     */
+
     List<Menu> getMenusByHrId(Integer hrid);
 
     /**
