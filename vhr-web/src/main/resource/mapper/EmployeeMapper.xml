@@ -90,5 +90,11 @@
             inner join department d on e.departmentId = d.id
             inner join joblevel j on e.jobLevelId = j.id
             inner join position pos on e.posId = pos.id
+        <if test="emp != null">
+            <if test="emp.name != null and emp.name !=''">
+                and e.name like concat('%', #{emp.name}, '%')
+            </if>
+        </if>
+
     </select>
 </mapper>

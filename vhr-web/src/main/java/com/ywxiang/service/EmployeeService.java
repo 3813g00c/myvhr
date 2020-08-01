@@ -2,6 +2,7 @@ package com.ywxiang.service;
 
 import com.ywxiang.entity.Employee;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,5 +14,5 @@ public interface EmployeeService {
      * 查询所有雇员信息
      * @return
      */
-    List<Employee> getAllEmployees();
+    List<Employee> getAllEmployees(Employee employee, Date[] beginDateScope);
 }

@@ -6,6 +6,7 @@ import com.ywxiang.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     EmployDao employDao;
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return employDao.getAllEmployees();
+    public List<Employee> getAllEmployees(Employee employee, Date[] beginDateScope) {
+        return employDao.getAllEmployees(employee, beginDateScope);
     }
 }
