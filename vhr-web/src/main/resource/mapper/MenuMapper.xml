@@ -99,5 +99,6 @@
         from menu m1 inner join menu m2 on m1.id = m2.parentId inner join menu_role mr
             on mr.mid = m2.id inner join hr_role hrr on hrr.rid = mr.rid and m2.enabled = true and hrr.hrid = #{hrid}
         order by m1.`id`,m2.`id`
+
     </select>
 </mapper>
