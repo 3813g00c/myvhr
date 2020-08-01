@@ -38,11 +38,11 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
         for (Menu menu: menus){
             if (antPathMatcher.match(menu.getUrl(), requestUrl)){
                 List<Role> roles = menu.getRoles();
-                StringBuilder str = new StringBuilder();
-                for (Role role : roles) {
-                    str.append(role.getName());
+                String[] str = new String[roles.size()];
+                for (int i = 0; i < roles.size(); i++) {
+                    str[i] = roles.get(i).getName();
                 }
-                return SecurityConfig.createList(str.toString());
+                return SecurityConfig.createList(str);
             }
         }
         // 返回到AccessDecisionManager类中
