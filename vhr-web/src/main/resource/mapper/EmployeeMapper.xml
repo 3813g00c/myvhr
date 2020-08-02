@@ -307,4 +307,7 @@
             n,politicsstatus p,department d,joblevel j,position pos where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
             e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id` and e.`id`=#{id}
     </select>
+    <select id="maxWorkID" resultType="java.lang.Integer">
+        select max(workID) from employee
+    </select>
 </mapper>

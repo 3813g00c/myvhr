@@ -1,8 +1,10 @@
 package com.ywxiang.Service;
 
 import com.rabbitmq.client.Channel;
+import com.ywxiang.common.Constant.MailConstants;
 import com.ywxiang.entity.Employee;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
@@ -42,6 +44,7 @@ public class MailService {
     @Autowired
     StringRedisTemplate redisTemplate;
 
+    @RabbitListener(queues = MailConstants.MAIL_QUEUE_NAME)
     public void handler(Message message, Channel channel) throws IOException{
         Employee employee = (Employee) message.getPayload();
         MessageHeaders headers = message.getHeaders();
@@ -70,7 +73,7 @@ public class MailService {
             String mail = templateEngine.process("mail", context);
             helper.setText(mail, true);
             javaMailSender.send(msg);
-            redisTemplate.opsForHash().put("mail_log", msgId, "javaboy");
+            redisTemplate.opsForHash().put("mail_log", msgId, "ywxiang");
             channel.basicAck(tag, false);
             log.info(msgId + ":邮件发送成功");
         } catch (MessagingException e) {

@@ -32,4 +32,10 @@ public interface EmployeeService {
      * @return
      */
     Integer addEmp(Employee employee);
+
+    /**
+     * 最大工号
+     * @return
+     */
+    Integer maxWorkID();
 }

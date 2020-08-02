@@ -9,14 +9,10 @@ import com.ywxiang.entity.Position;
 import com.ywxiang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -49,14 +45,20 @@ public class EmpBasicController {
     @GetMapping("/")
     public RespPageBean getEmployByPage(@RequestParam Integer page, @RequestParam Integer size,
                                     Employee employee, Date[] beginDateScope){
-        System.out.println(employee);
-        System.out.println(Arrays.toString(beginDateScope));
         PageHelper.startPage(page, size);
         List<Employee> employees = employeeService.getAllEmployees(employee, beginDateScope);
         RespPageBean respPage = new RespPageBean();
         respPage.setTotal((long) employees.size());
         respPage.setData(employees);
         return respPage;
+    }
+
+    @PostMapping("/")
+    public RespBean addEmp(@RequestBody Employee employee) {
+        if (employeeService.addEmp(employee) == 1) {
+            return RespBean.ok("添加成功!");
+        }
+        return RespBean.error("添加失败!");
     }
 
     @GetMapping("/positions")
@@ -70,6 +72,7 @@ public class EmpBasicController {
         return POIUtils.employee2Excel(employees);
     }
 
+    @PostMapping("/import")
     public RespBean importData(MultipartFile file) throws IOException{
         List<Employee> list = POIUtils.excel2Employee(file, nationService.getAllNations(),
                 politicsstatusService.getAllPoliticsstatus(), departmentService.getAllDepartmentsWithOutChildren(),
@@ -78,5 +81,12 @@ public class EmpBasicController {
             return RespBean.ok("上传成功");
         }
         return RespBean.error("上传失败");
+    }
+
+    @GetMapping("/maxWorkID")
+    public RespBean maxWorkID() {
+        RespBean respBean = RespBean.build().setStatus(200)
+                .setObj(String.format("%08d", employeeService.maxWorkID() + 1));
+        return respBean;
     }
 }

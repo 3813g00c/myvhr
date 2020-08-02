@@ -45,6 +45,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Integer maxWorkID() {
+        return employDao.maxWorkID();
+    }
+
+    @Override
     public Integer addEmp(Employee employee) {
         Date beginContract = employee.getBeginContract();
         Date endContract = employee.getEndContract();

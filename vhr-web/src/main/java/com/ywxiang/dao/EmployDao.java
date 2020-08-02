@@ -43,4 +43,10 @@ public interface EmployDao {
      * @return
      */
     Employee getEmployeeById(Integer id);
+
+    /**
+     * 最大工号
+     * @return
+     */
+    Integer maxWorkID();
 }
