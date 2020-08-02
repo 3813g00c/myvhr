@@ -35,4 +35,12 @@ public interface EmployDao {
      * @return
      */
     int insertSelective(Employee record);
+
+    /**
+     * 通过Id查询雇员信息
+     *
+     * @param id
+     * @return
+     */
+    Employee getEmployeeById(Integer id);
 }

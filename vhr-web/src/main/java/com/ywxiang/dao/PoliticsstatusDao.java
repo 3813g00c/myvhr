@@ -1,6 +1,6 @@
 package com.ywxiang.dao;
 
-import com.ywxiang.entity.Position;
+import com.ywxiang.entity.Politicsstatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +15,5 @@ public interface PoliticsstatusDao {
      * 获取政治面貌
      * @return
      */
-    List<Position> getAllPoliticsstatus();
+    List<Politicsstatus> getAllPoliticsstatus();
 }

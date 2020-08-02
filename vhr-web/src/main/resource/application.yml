@@ -23,6 +23,12 @@ spring:
     database: 0
     port: 6379
     password: Xyw@172410
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 127.0.0.1
+    publisher-returns: true
+    publisher-confirm-type:
 
 pagehelper:
   helperDialect: mysql

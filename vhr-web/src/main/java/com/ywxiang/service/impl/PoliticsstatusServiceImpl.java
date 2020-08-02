@@ -1,7 +1,7 @@
 package com.ywxiang.service.impl;
 
 import com.ywxiang.dao.PoliticsstatusDao;
-import com.ywxiang.entity.Position;
+import com.ywxiang.entity.Politicsstatus;
 import com.ywxiang.service.PoliticsstatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class PoliticsstatusServiceImpl implements PoliticsstatusService {
     PoliticsstatusDao politicsstatusDao;
 
     @Override
-    public List<Position> getAllPoliticsstatus() {
+    public List<Politicsstatus> getAllPoliticsstatus() {
         return politicsstatusDao.getAllPoliticsstatus();
     }
 }
