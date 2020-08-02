@@ -24,4 +24,12 @@ public interface EmployeeService {
      * @return
      */
     Integer addEmps(@Param("list") List<Employee> list);
+
+    /**
+     * 添加雇员信息
+     *
+     * @param employee
+     * @return
+     */
+    Integer addEmp(Employee employee);
 }

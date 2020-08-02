@@ -27,4 +27,12 @@ public interface EmployDao {
      * @return
      */
     Integer addEmps(@Param("list") List<Employee> list);
+
+    /**
+     * 添加新的人员信息
+     *
+     * @param record
+     * @return
+     */
+    int insertSelective(Employee record);
 }
