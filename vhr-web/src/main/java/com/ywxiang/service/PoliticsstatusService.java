@@ -1,6 +1,6 @@
 package com.ywxiang.service;
 
-import com.ywxiang.entity.Position;
+import com.ywxiang.entity.Politicsstatus;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface PoliticsstatusService {
      * 获取政治面貌
      * @return
      */
-    List<Position> getAllPoliticsstatus();
+    List<Politicsstatus> getAllPoliticsstatus();
 }

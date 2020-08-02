@@ -20,4 +20,11 @@ public interface EmployDao {
      */
     List<Employee> getAllEmployees(@Param("emp") Employee employee, @Param("beginDateScope") Date[] beginDateScope);
 
+    /**
+     * 批量添加人事信息
+     *
+     * @param list
+     * @return
+     */
+    Integer addEmps(@Param("list") List<Employee> list);
 }

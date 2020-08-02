@@ -23,4 +23,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getAllEmployees(Employee employee, Date[] beginDateScope) {
         return employDao.getAllEmployees(employee, beginDateScope);
     }
+
+    @Override
+    public Integer addEmps(List<Employee> list) {
+        return employDao.addEmps(list);
+    }
 }
