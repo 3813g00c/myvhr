@@ -3,10 +3,13 @@ package com.ywxiang.service.impl;
 import com.ywxiang.dao.HrDao;
 import com.ywxiang.entity.Hr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author ywxiang
@@ -26,5 +29,10 @@ public class HrService implements UserDetailsService {
         }
         hr.setRoles(hrDao.getHrRolesById(hr.getId()));
         return hr;
+    }
+
+    public List<Hr> getAllHrsExceptCurrentHr(){
+        return hrDao.getAllHrsExceptCurrentHr(((Hr) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getId());
     }
 }
